@@ -20,17 +20,15 @@ public class StudentController {
         this.studentService = studentService;
 
     }
-
-
     @GetMapping("/")
     public ResponseEntity getStudents(){
         System.out.println("BEZ PARAMOW");
         return ResponseEntity.ok(this.studentService.getStudents());
     }
     @GetMapping("/{studentId}")
-    public ResponseEntity getStudent(@PathVariable("studentId") Long id){
+    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId){
         System.out.println("DUPA");
-        return ResponseEntity.ok(studentService.getStudent(id));
+        return ResponseEntity.ok(studentService.getStudent(studentId));
     }
 
     @PostMapping("/")
@@ -40,8 +38,17 @@ public class StudentController {
     }
 
     @DeleteMapping("/{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long id){
-        studentService.deleteStudent(id);
+    public void deleteStudent(@PathVariable("studentId") Long studentId){
+        studentService.deleteStudent(studentId);
+    }
+
+    @PutMapping("/{studentId}")
+    public void updateStudent(
+            @PathVariable("studentId") Long studentId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email
+    ){
+        studentService.updateStudent(studentId, name, email);
     }
 }
 
