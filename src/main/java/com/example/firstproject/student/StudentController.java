@@ -1,0 +1,47 @@
+package com.example.firstproject.student;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequestMapping(path="api/v1/student")
+public class StudentController {
+
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService){
+        this.studentService = studentService;
+
+    }
+
+
+    @GetMapping("/")
+    public ResponseEntity getStudents(){
+        System.out.println("BEZ PARAMOW");
+        return ResponseEntity.ok(this.studentService.getStudents());
+    }
+    @GetMapping("/{studentId}")
+    public ResponseEntity getStudent(@PathVariable("studentId") Long id){
+        System.out.println("DUPA");
+        return ResponseEntity.ok(studentService.getStudent(id));
+    }
+
+    @PostMapping("/")
+    public void registerNewStudent(@RequestBody Student student)
+    {
+        studentService.addNewStudent(student);
+    }
+
+    @DeleteMapping("/{studentId}")
+    public void deleteStudent(@PathVariable("studentId") Long id){
+        studentService.deleteStudent(id);
+    }
+}
+

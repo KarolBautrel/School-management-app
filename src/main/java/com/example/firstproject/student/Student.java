@@ -1,12 +1,22 @@
 package com.example.firstproject.student;
-
+import jakarta.persistence.*;
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
+
+
+@Entity
+@Table
 public class Student {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
+    @Transient
     private Integer age;
     private LocalDate dateOfBirth;
     private String email;
@@ -14,17 +24,15 @@ public class Student {
     public Student(){
 
     }
-    public Student(Long id, String name, Integer age, LocalDate dateOfBirth, String email) {
+    public Student(Long id, String name,  LocalDate dateOfBirth, String email) {
         this.id = id;
         this.name = name;
-        this.age = age;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
     }
 
-    public Student(String name, Integer age, LocalDate dateOfBirth, String email) {
+    public Student(String name,  LocalDate dateOfBirth, String email) {
         this.name = name;
-        this.age = age;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
     }
@@ -38,7 +46,8 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+
     }
 
     public LocalDate getDateOfBirth() {
