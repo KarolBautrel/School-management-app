@@ -1,4 +1,5 @@
 package com.example.firstproject.student;
+import com.example.firstproject.studentgroup.StudentGroup;
 import jakarta.persistence.*;
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
