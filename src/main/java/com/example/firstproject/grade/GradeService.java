@@ -57,4 +57,10 @@ public class GradeService{
         gradeOptional.setGrade(grade);
 
     }
+
+    public void deleteGrade(Long gradeId){
+        Grade gradeOptional = this.gradeRepository.findById(gradeId).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade was not found"));
+        gradeRepository.deleteById(gradeId);
+    }
 }

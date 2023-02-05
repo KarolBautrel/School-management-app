@@ -49,4 +49,12 @@ public class GradeController {
     ){
         gradeService.updateGrade(gradeId, grade);
     }
+
+    @DeleteMapping ("/{gradeId}")
+    public void updateStudentGrade(
+            @PathVariable("gradeId") Long gradeId
+
+    ){
+        gradeService.deleteGrade(gradeId);
+    }
 }
