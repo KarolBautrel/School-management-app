@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,13 @@ public void registerUser( UserDTO userDTO){
     User user = new User(userDTO.username, userDTO.email, hashedPasword, student);
     this.userRepository.save(user);
 }
+
+public void loginUser(LoginDTO loginDTO){
+//        PasswordEncoder passwordEncoder = this.encodingService.encoder();
+//        passwordEncoder.matches()
+}
+
+
 
 public List<User> listAllUsers(){
         return userRepository.findAll();
