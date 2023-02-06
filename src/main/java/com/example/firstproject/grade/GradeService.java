@@ -2,9 +2,7 @@ package com.example.firstproject.grade;
 
 import com.example.firstproject.student.Student;
 import com.example.firstproject.student.StudentRepository;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.transaction.Transactional;
-import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class GradeService{

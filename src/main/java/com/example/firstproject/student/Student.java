@@ -1,6 +1,8 @@
 package com.example.firstproject.student;
 import com.example.firstproject.grade.Grade;
 import com.example.firstproject.studentgroup.StudentGroup;
+import com.example.firstproject.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import javax.xml.crypto.Data;
@@ -116,4 +118,12 @@ public class Student {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
