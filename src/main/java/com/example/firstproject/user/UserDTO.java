@@ -1,12 +1,12 @@
 package com.example.firstproject.user;
 
 public class UserDTO {
-    String username;
-    String email;
-    String password;
-    String confirmPassword;
-    Integer studentId;
-    UserDTO(String username, String email, String password, String confirmPassword, Integer studentId){
+    public String username;
+    public String email;
+    public String password;
+    public String confirmPassword;
+    public Integer studentId;
+    public UserDTO(String username, String email, String password, String confirmPassword, Integer studentId){
         this.username = username;
         this.email = email;
         this.password = password;

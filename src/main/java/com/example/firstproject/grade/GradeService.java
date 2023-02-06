@@ -37,6 +37,7 @@ public class GradeService{
     }
 
     public void addGrade(Long studentId, Map<String, Object> gradeJson) throws ParseException {
+        // THis map of String, Object is only learning purposes, I know that I should use GradeDTO
         Student studentOptional = this.studentRepository.findById(studentId).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
 
