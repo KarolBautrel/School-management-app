@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path="api/protected/grade")
+@RequestMapping(path="api/public/grade")
 public class GradeController {
 
 

@@ -1,30 +1,20 @@
 package com.example.firstproject.user;
 
+import com.example.firstproject.auth.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("api/public/auth/")
+@RequestMapping("api/protected/user/")
 public class UserController {
     private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterAccountDTO registerAccountDTO){
-        return ResponseEntity.ok(userService.registerUser(registerAccountDTO));
-    }
-
-    @PostMapping("/authenticate")
-    public ResponseEntity<TokenUserDTO> login(@RequestBody LoginDTO loginDTO){
-        return ResponseEntity.ok(userService.loginUser(loginDTO));
     }
 
     @GetMapping("/")
@@ -36,4 +26,11 @@ public class UserController {
     public UserDTO getUserById(@PathVariable("userId") Long userId){
         return this.userService.getUserById(userId);
     }
+
+    @GetMapping("/loggedUser")
+    public ResponseEntity<UserDTO> getLoggedUser(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.getLoggedUser(token));
+    }
+
+
 }

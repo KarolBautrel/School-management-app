@@ -1,4 +1,4 @@
-package com.example.firstproject.user;
+package com.example.firstproject.auth;
 
 public class RegisterAccountDTO {
     public String username;

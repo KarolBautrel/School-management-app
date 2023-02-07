@@ -34,7 +34,7 @@ public class Config {
     @Bean
     public UserDetailsService userDetailsService(){
         return username ->userRepository.findUserByUsernameQuery(username)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong username token error"));
 
     }
 
