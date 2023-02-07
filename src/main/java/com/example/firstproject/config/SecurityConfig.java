@@ -1,5 +1,6 @@
 package com.example.firstproject.config;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("WITAM");
         http
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.ERROR)
+                .permitAll()
                 .requestMatchers("/api/public/**")
                 .permitAll()
                 .anyRequest()
@@ -44,7 +46,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling();
 
 
         return http.build();

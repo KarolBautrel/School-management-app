@@ -1,9 +1,11 @@
 package com.example.firstproject.auth;
 
 import com.example.firstproject.config.JwtService;
+import com.example.firstproject.exceptions.UserServiceException;
 import com.example.firstproject.student.Student;
 import com.example.firstproject.student.StudentRepository;
 import com.example.firstproject.user.*;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,8 @@ public class AuthService {
                 checkIfStudentRegistered(Long.valueOf(registerAccountDTO.studentId));
         if (userOptional.isPresent()) {
             System.out.println("---------------------PRESENT----------------");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email taken");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Email exists");
         }
         if (registeredStudent.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
