@@ -1,13 +1,14 @@
 package com.example.firstproject.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/user/")
+@RequestMapping("api/v1/auth/")
 public class UserController {
     private final UserService userService;
 
@@ -16,18 +17,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public void registerUser(@RequestBody UserDTO userDTO){
-        this.userService.registerUser(userDTO);
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterAccountDTO registerAccountDTO){
+        return ResponseEntity.ok(userService.registerUser(registerAccountDTO));
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<TokenUserDTO> login(@RequestBody LoginDTO loginDTO){
+        return ResponseEntity.ok(userService.loginUser(loginDTO));
     }
 
     @GetMapping("/")
-    public List<User> listAllUsers(){
+    public List<UserDTO> listAllUsers(){
        return this.userService.listAllUsers();
     };
 
     @GetMapping("/{userId}")
-    public Optional<User> getUserById(@PathVariable("userId") Long userId){
+    public UserDTO getUserById(@PathVariable("userId") Long userId){
         return this.userService.getUserById(userId);
     }
 }

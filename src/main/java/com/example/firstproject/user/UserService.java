@@ -1,17 +1,20 @@
 package com.example.firstproject.user;
 
-import com.example.firstproject.config.EncodingService;
+import com.example.firstproject.config.JwtService;
 import com.example.firstproject.student.Student;
 import com.example.firstproject.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,59 +22,90 @@ public class UserService {
 
 private final UserRepository userRepository;
 private final StudentRepository studentRepository;
-private final EncodingService encodingService;
+private final UserDTOMapper userDTOMapper;
+private final PasswordEncoder passwordEncoder;
+
+private final AuthenticationManager authenticationManager;
+private final JwtService jwtService;
+
     @Autowired
-    public UserService(UserRepository userRepository, StudentRepository studentRepository, EncodingService encodingService){
+    public UserService(UserRepository userRepository,
+                       StudentRepository studentRepository,
+                        PasswordEncoder passwordEncoder,
+                       UserDTOMapper userDTOMapper,
+                       JwtService jwtService,
+                       AuthenticationManager authenticationManager){
     this.userRepository = userRepository;
     this.studentRepository = studentRepository;
-    this.encodingService = encodingService;
+    this.passwordEncoder = passwordEncoder;
+    this.userDTOMapper = userDTOMapper;
+    this.jwtService = jwtService;
+    this.authenticationManager = authenticationManager;
+
 }
 
-public void registerUser( UserDTO userDTO){
+public AuthenticationResponse registerUser( RegisterAccountDTO registerAccountDTO) {
 
-    Optional<User> userOptional = userRepository.findUserByEmail(userDTO.email);
+    Optional<User> userOptional = userRepository.findUserByEmail(registerAccountDTO.email);
     Optional<User> registeredStudent = userRepository.
-            checkIfStudentRegistered(Long.valueOf(userDTO.studentId));
+            checkIfStudentRegistered(Long.valueOf(registerAccountDTO.studentId));
 
-    if (registeredStudent.isPresent()){
-        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST,
+    if (registeredStudent.isPresent()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Student already singed in to account");
     }
-    if (userOptional.isPresent()){
-        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "email taken");
+    if (userOptional.isPresent()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email taken");
     }
 
-    if (!userDTO.password.equals(userDTO.confirmPassword)){
+    if (!registerAccountDTO.password.equals(registerAccountDTO.confirmPassword)) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords incorrect ");
     }
-
-    Student student = this.studentRepository.findById(Long.valueOf(userDTO.studentId)).
+    Student student = this.studentRepository.findById(Long.valueOf(registerAccountDTO.studentId)).
             orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Student not found"));
-    PasswordEncoder passwordEncoder = this.encodingService.encoder();
-    String hashedPasword = passwordEncoder.encode(userDTO.password);
-    User user = new User(userDTO.username, userDTO.email, hashedPasword, student);
+    User user = new User(registerAccountDTO.username, registerAccountDTO.email,registerAccountDTO.password , student);
+
     this.userRepository.save(user);
+    var jwtToken = jwtService.generateToken(user);
+
+    return new AuthenticationResponse(jwtToken);
 }
 
-public void loginUser(LoginDTO loginDTO){
-//        PasswordEncoder passwordEncoder = this.encodingService.encoder();
-//        passwordEncoder.matches()
+public TokenUserDTO loginUser(LoginDTO loginDTO){
+
+
+    authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    loginDTO.email,
+                    loginDTO.password
+            )
+    );
+
+    User optionalUser = this.userRepository.findUserByEmail(loginDTO.email).
+            orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"no user"));
+
+    var jwtToken = jwtService.generateToken(optionalUser);
+
+    return new TokenUserDTO(jwtToken, optionalUser.getUsername(), optionalUser.getEmail(), optionalUser.getRole());
 }
 
 
 
-public List<User> listAllUsers(){
-        return userRepository.findAll();
+public List<UserDTO> listAllUsers(){
+        return userRepository.findAll().
+                stream().
+                map(userDTOMapper).
+                collect(Collectors.toList());
     }
 
-public Optional<User> getUserById(Long userId){
-       Optional<User> optionalUser = this.userRepository.findById(userId);
-        if(optionalUser.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "There is no user with this id");
-        }
-        return optionalUser;
+public UserDTO getUserById(Long userId){
+       return this.userRepository.findById(userId)
+               .map(userDTOMapper).
+               orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student like this"));
+
+
+       // return optionalUser;
     }
 }
 
