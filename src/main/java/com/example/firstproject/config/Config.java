@@ -33,7 +33,7 @@ public class Config {
     private final UserRepository userRepository;
     @Bean
     public UserDetailsService userDetailsService(){
-        return username ->userRepository.findUserByEmail(username)
+        return username ->userRepository.findUserByUsernameQuery(username)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
     }

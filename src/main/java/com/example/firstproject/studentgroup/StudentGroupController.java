@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="api/v1/student-group")
+@RequestMapping(path="api/public/student-group")
 public class StudentGroupController {
 
 

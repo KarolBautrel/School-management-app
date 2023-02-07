@@ -25,7 +25,6 @@ private final StudentRepository studentRepository;
 private final UserDTOMapper userDTOMapper;
 private final PasswordEncoder passwordEncoder;
 
-private final AuthenticationManager authenticationManager;
 private final JwtService jwtService;
 
     @Autowired
@@ -33,20 +32,19 @@ private final JwtService jwtService;
                        StudentRepository studentRepository,
                         PasswordEncoder passwordEncoder,
                        UserDTOMapper userDTOMapper,
-                       JwtService jwtService,
-                       AuthenticationManager authenticationManager){
+                       JwtService jwtService
+                        ){
     this.userRepository = userRepository;
     this.studentRepository = studentRepository;
     this.passwordEncoder = passwordEncoder;
     this.userDTOMapper = userDTOMapper;
     this.jwtService = jwtService;
-    this.authenticationManager = authenticationManager;
 
 }
 
 public AuthenticationResponse registerUser( RegisterAccountDTO registerAccountDTO) {
 
-    Optional<User> userOptional = userRepository.findUserByEmail(registerAccountDTO.email);
+    Optional<User> userOptional = userRepository.findByEmail(registerAccountDTO.email);
     Optional<User> registeredStudent = userRepository.
             checkIfStudentRegistered(Long.valueOf(registerAccountDTO.studentId));
 
@@ -75,14 +73,9 @@ public AuthenticationResponse registerUser( RegisterAccountDTO registerAccountDT
 public TokenUserDTO loginUser(LoginDTO loginDTO){
 
 
-    authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    loginDTO.email,
-                    loginDTO.password
-            )
-    );
 
-    User optionalUser = this.userRepository.findUserByEmail(loginDTO.email).
+    System.out.println("WITAM");
+    User optionalUser = this.userRepository.findByEmail(loginDTO.email).
             orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"no user"));
 
     var jwtToken = jwtService.generateToken(optionalUser);

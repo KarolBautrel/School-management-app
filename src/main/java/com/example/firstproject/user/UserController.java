@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/auth/")
+@RequestMapping("api/public/auth/")
 public class UserController {
     private final UserService userService;
 
