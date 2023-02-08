@@ -29,5 +29,20 @@ public class AuthController {
         return ResponseEntity.ok(authService.loginUser(authenticationRequest));
     }
 
+    @PutMapping("/change/email")
+    public void changeEmail(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String email){
 
+        authService.changeEmail(token, email);
+    }
+
+
+    @PutMapping("/change/password")
+    public void changePassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ChangePasswordDTO changePasswordDTO
+    ){
+        authService.changePassword(token ,changePasswordDTO);
+    }
 }

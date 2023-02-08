@@ -1,11 +1,16 @@
 package com.example.firstproject.studentgroup;
 import com.example.firstproject.student.Student;
+import com.example.firstproject.student.StudentDTO;
+import com.example.firstproject.student.StudentDTOMapper;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -18,8 +23,7 @@ public class StudentGroup {
     private int size;
 
     @OneToMany(
-     cascade = CascadeType.ALL
-    )
+     cascade = CascadeType.ALL, mappedBy = "studentGroup")
     private List<Student> studentList = new ArrayList<>();
 
 
@@ -30,10 +34,19 @@ public class StudentGroup {
         this.name = name;
         this.size = size;
         this.studentList = studentList;
+
     }
 
-    public List<Student> getStudentList() {
-        return studentList;
+    public List<StudentDTO> getStudentList() {
+
+
+    return this.studentList
+            .stream()
+            .map(student ->
+                    new StudentDTO(student.getName()
+                            ,student.getAge()
+                            , student.getEmail()
+                            )).toList();
     }
 
 
@@ -42,19 +55,19 @@ public class StudentGroup {
     }
 
     public void addToStudentList(Student student){
-        List<Student> oldStudentList = this.getStudentList();
-        oldStudentList.add(student);
-        this.setStudentList(oldStudentList);
+        this.studentList.add(student);
+        student.setStudentGroup(this);
+
     }
 
     public void removeStudentFromList(Student student) throws ResponseStatusException{
-        List<Student> oldStudentList = this.getStudentList();
 
-        if(!oldStudentList.contains(student)){
+
+        if(!this.studentList.contains(student)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no student in this group");
         }
-        oldStudentList.remove(student);
-        this.setStudentList(oldStudentList);
+        this.studentList.remove(student);
+        student.setStudentGroup(null);
     }
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.example.firstproject.student;
 
+import com.example.firstproject.auth.ChangePasswordDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,22 +54,24 @@ public class StudentService {
         System.out.println("DELETED");
     }
     @Transactional
-    public void updateStudent(Long studentId, String name, String email) throws ResponseStatusException{
+    public void updateStudent(Long studentId, String name, String email) throws ResponseStatusException {
         Student student = this.studentRepository.findById(studentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "No student with this id"));
-        if (name != null && !Objects.equals(student.getName(), name)){
+        if (name != null && !Objects.equals(student.getName(), name)) {
             student.setName(name);
         }
 
-        if (email != null && !Objects.equals(student.getEmail(), email)){
+        if (email != null && !Objects.equals(student.getEmail(), email)) {
             Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
-            if (studentOptional.isPresent()){
+            if (studentOptional.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email taken");
             }
             student.setEmail(email);
         }
     }
+
+
 
 
 }

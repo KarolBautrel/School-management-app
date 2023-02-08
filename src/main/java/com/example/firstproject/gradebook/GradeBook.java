@@ -1,15 +1,18 @@
 package com.example.firstproject.gradebook;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.firstproject.studentgroup.StudentGroup;
+import jakarta.persistence.*;
 
 @Entity
 public class GradeBook {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
+
+    @OneToOne
+    StudentGroup studentGroup;
+
+
 
 
     public GradeBook (){

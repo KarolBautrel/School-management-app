@@ -61,23 +61,25 @@ public class Config {
 
         return args -> {
 
-
+            StudentGroup groupA = new StudentGroup("Group A", 15, new ArrayList<>() );
+            StudentGroup groupB = new StudentGroup("Group B", 18, new ArrayList<>());
             Student karol =   new Student(
                     "Karol",
                     LocalDate.of(1995, Month.APRIL, 1),
                     "karol@karol.karol",
-                    new ArrayList<>()
+                    new ArrayList<>(),
+                    groupA
 
             );
             Student marian =   new Student(
                     "Marian",
                     LocalDate.of(1997, Month.APRIL, 1),
                     "marian@marian.marian",
-                    new ArrayList<>()
+                    new ArrayList<>(),
+                    groupB
             );
 
-            StudentGroup groupA = new StudentGroup("Group A", 15, new ArrayList<>() );
-            StudentGroup groupB = new StudentGroup("Group B", 18, new ArrayList<>());
+
             Grade gradeKarol = new Grade("history", 3, karol);
             Grade gradeKarol1 = new Grade("biology", 4,karol);
             Grade gradeKarol2 = new Grade("history", 3,karol);

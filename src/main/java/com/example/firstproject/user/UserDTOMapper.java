@@ -12,8 +12,6 @@ public class UserDTOMapper implements Function<User, UserDTO> {
     public UserDTO apply(User user){
         return new UserDTO(user.getUsername(), user.getEmail(), user.getRole());
     }
-    public TokenUserDTO applyToken(String token, User user){
 
-        return new TokenUserDTO(token, user.getUsername(),user.getEmail(), user.getRole());
-    }
+
 }

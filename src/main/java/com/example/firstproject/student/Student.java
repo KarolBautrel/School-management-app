@@ -26,7 +26,10 @@ public class Student {
     private Integer age;
     private LocalDate dateOfBirth;
     private String email;
-
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="studentgroup_id", nullable = true)
+    @JsonManagedReference
+    private StudentGroup studentGroup;
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.ALL
@@ -52,12 +55,21 @@ public class Student {
     }
 
 
-    public Student( String name, LocalDate dateOfBirth, String email, List<Grade> grades) {
+    public StudentGroup getStudentGroup() {
+        return studentGroup;
+    }
+
+    public void setStudentGroup(StudentGroup studentGroup) {
+        this.studentGroup = studentGroup;
+    }
+
+    public Student(String name, LocalDate dateOfBirth, String email, List<Grade> grades, StudentGroup studentGroup) {
 
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.grades = grades;
+        this.studentGroup = studentGroup;
     }
 
     public List<Grade> getGrades() {

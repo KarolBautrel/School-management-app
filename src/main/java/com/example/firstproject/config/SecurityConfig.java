@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/public/auth/change/**")
+                .permitAll()
                 .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.ERROR)
                 .permitAll()
                 .requestMatchers("/api/public/**")

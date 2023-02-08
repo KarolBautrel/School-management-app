@@ -5,6 +5,7 @@ import com.example.firstproject.exceptions.UserServiceException;
 import com.example.firstproject.student.Student;
 import com.example.firstproject.student.StudentRepository;
 import com.example.firstproject.user.*;
+import jakarta.transaction.Transactional;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +56,11 @@ public class AuthService {
         Student student = this.studentRepository.findById(Long.valueOf(registerAccountDTO.studentId)).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Student not found"));
-        User user = new User(registerAccountDTO.username, registerAccountDTO.email,registerAccountDTO.password , student);
+        String encodedPassword = passwordEncoder.encode(registerAccountDTO.password);
+        User user = new User(registerAccountDTO.username,
+                registerAccountDTO.email,
+                encodedPassword,
+                student);
 
         this.userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -64,14 +69,49 @@ public class AuthService {
     }
 
     public TokenUserDTO loginUser(AuthenticationRequest authenticationRequest){
-        System.out.println("WITAM");
+
+
         User optionalUser = this.userRepository.findByEmail(authenticationRequest.email).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"no user"));
-
+        if(!passwordEncoder.matches(authenticationRequest.password, optionalUser.getPassword())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Wrong password");
+        }
         var jwtToken = jwtService.generateToken(optionalUser);
 
         return new TokenUserDTO(jwtToken, optionalUser.getUsername(), optionalUser.getEmail(), optionalUser.getRole());
     }
+    @Transactional
+    public void changeEmail(String token, String email){
+        String username = jwtService.extractUsername(token.substring(7));//
+        User user = this.userRepository
+                .findUserByUsernameQuery(username)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (this.userRepository.findUserByEmailQuery(email).isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is taken by another user");
+        }
+        user.setEmail(email);
 
 
+
+    }
+    @Transactional
+    public void changePassword(String token, ChangePasswordDTO changePasswordDTO){
+        String username = jwtService.extractUsername(token.substring(7));//
+        User user = this.userRepository
+                .findUserByUsernameQuery(username)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        System.out.println(passwordEncoder.matches(changePasswordDTO.oldPassword, user.getPassword()));
+        System.out.println(changePasswordDTO.newPassword);
+        System.out.println(changePasswordDTO.reNewPassword);
+
+        if(!passwordEncoder.matches(changePasswordDTO.oldPassword, user.getPassword())){
+            throw new  ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong password");
+        }
+        if (!changePasswordDTO.newPassword.equals(changePasswordDTO.reNewPassword)){
+            throw new  ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords doesnt match");
+        }
+        String encodedNewPassword = passwordEncoder.encode(changePasswordDTO.newPassword);
+        user.setPassword(encodedNewPassword);
+    }
 }

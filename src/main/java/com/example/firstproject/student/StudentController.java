@@ -22,7 +22,6 @@ public class StudentController {
     }
     @GetMapping("/")
     public ResponseEntity getStudents(){
-        System.out.println("BEZ PARAMOW");
         return ResponseEntity.ok(this.studentService.getStudents());
     }
     @GetMapping("/{studentId}")
