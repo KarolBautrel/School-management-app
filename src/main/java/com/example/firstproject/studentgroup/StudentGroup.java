@@ -24,6 +24,7 @@ public class StudentGroup {
 
     @OneToMany(
      cascade = CascadeType.ALL, mappedBy = "studentGroup")
+    @JsonManagedReference
     private List<Student> studentList = new ArrayList<>();
 
 

@@ -42,13 +42,6 @@ private final JwtService jwtService;
 }
 
 
-
-//public UserDTO getLoggedUser(){
-//    return new UserDTO();
-//}
-
-
-
 public List<UserDTO> listAllUsers(){
         return userRepository.findAll().
                 stream().

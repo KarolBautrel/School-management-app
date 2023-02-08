@@ -3,7 +3,10 @@ package com.example.firstproject.config;
 import com.example.firstproject.grade.*;
 import com.example.firstproject.student.*;
 import com.example.firstproject.studentgroup.*;
-import com.example.firstproject.user.User;
+import com.example.firstproject.subjects.Subject;
+import com.example.firstproject.subjects.SubjectRepository;
+import com.example.firstproject.teacher.Teacher;
+import com.example.firstproject.teacher.TeacherRepository;
 import com.example.firstproject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -14,9 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -57,10 +58,20 @@ public class Config {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository repository, StudentGroupRepository groupRepository, GradeRepository gradeRepository, UserRepository userRepository){
+    CommandLineRunner commandLineRunner(StudentRepository repository
+            , StudentGroupRepository groupRepository
+            , GradeRepository gradeRepository
+            , UserRepository userRepository
+            , SubjectRepository subjectRepository
+            ,TeacherRepository teacherRepository){
 
         return args -> {
-
+            Subject physics = new Subject("physics", new ArrayList<>());
+            Subject biology = new Subject("physics", new ArrayList<>());
+            Subject history = new Subject("history", new ArrayList<>());
+            Teacher phyTeacher = new Teacher("Dorota",physics);
+            Teacher bioTeacher = new Teacher("Agnieszka",biology);
+            Teacher histTeacher = new Teacher("Romek", history);
             StudentGroup groupA = new StudentGroup("Group A", 15, new ArrayList<>() );
             StudentGroup groupB = new StudentGroup("Group B", 18, new ArrayList<>());
             Student karol =   new Student(
@@ -86,7 +97,8 @@ public class Config {
             Grade gradeMarian = new Grade("biology", 3, marian);
             Grade gradeMarian1 = new Grade("biology", 3, marian);
             Grade gradeMarian2= new Grade("history", 3, marian);
-
+            subjectRepository.saveAll(List.of(physics, history, biology));
+            teacherRepository.saveAll(List.of(phyTeacher, bioTeacher, histTeacher));
             repository.saveAll(
                     List.of(karol, marian)
             );
