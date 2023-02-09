@@ -67,7 +67,7 @@ public class Config {
 
         return args -> {
             Subject physics = new Subject("physics", new ArrayList<>());
-            Subject biology = new Subject("physics", new ArrayList<>());
+            Subject biology = new Subject("biology", new ArrayList<>());
             Subject history = new Subject("history", new ArrayList<>());
             Teacher phyTeacher = new Teacher("Dorota",physics);
             Teacher bioTeacher = new Teacher("Agnieszka",biology);
