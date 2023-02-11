@@ -41,10 +41,8 @@ public class Subject {
         this.name = name;
     }
 
-    public List<TeacherDTO> getTeachers() {
-        return teachers.
-                stream().
-                map(teacher -> new TeacherDTO(teacher.name)).toList();
+    public List<Teacher> getTeachers() {
+        return  this.teachers;
 
     }
 

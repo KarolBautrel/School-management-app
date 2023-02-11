@@ -1,6 +1,8 @@
 package com.example.firstproject.studentgroup;
 
 import com.example.firstproject.student.Student;
+import com.example.firstproject.student.StudentDTO;
+import com.example.firstproject.student.StudentDTOMapper;
 import com.example.firstproject.student.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +19,22 @@ public class StudentGroupService {
     private final StudentGroupRepository studentGroupRepository;
     private final StudentRepository studentRepository;
 
+    private final StudentGroupDTOMapper studentGroupDTOMapper;
+
     @Autowired
     public StudentGroupService(StudentGroupRepository studentGroupRepository,
-                               StudentRepository studentRepository){
+                               StudentRepository studentRepository,
+                               StudentGroupDTOMapper studentGroupDTOMapper){
         this.studentGroupRepository= studentGroupRepository;
         this.studentRepository = studentRepository;
+        this.studentGroupDTOMapper = studentGroupDTOMapper;
     }
 
-    public List<StudentGroup> getStudentGroups(){
-        return this.studentGroupRepository.findAll();
+    public List<StudentGroupDTO> getStudentGroups(){
+      List<StudentGroup> rawStudentGroups =  this.studentGroupRepository.findAll();
+      return rawStudentGroups.stream()
+              .map(studentGroupDTOMapper)
+              .toList();
     }
 
     public Optional<StudentGroup>getStudentGroup(Long groupId)throws ResponseStatusException{

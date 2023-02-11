@@ -20,6 +20,7 @@ public class SubjectController {
     public List<SubjectDTO> getSubjects(){
         return this.subjectService.getSubjects();
     }
+
     @GetMapping("/{subject}")
     public SubjectDTO getSubject(@PathVariable("subject") String subject){
         return this.subjectService.getSubject(subject);

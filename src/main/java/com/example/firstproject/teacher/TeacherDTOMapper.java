@@ -9,6 +9,6 @@ public class TeacherDTOMapper implements Function<Teacher, TeacherDTO> {
 
 @Override
 public TeacherDTO apply(Teacher teacher){
-    return new TeacherDTO(teacher.name);
+    return new TeacherDTO(teacher.name, teacher.subject.getName());
 }
 }

@@ -44,14 +44,20 @@ public class Student {
 
 
     public List<Grade> getGradesBySubject(String subject){
-        List<Grade> studentGrades = this.getGrades();
-        List<Grade>subjectGrades = new ArrayList<>();
-        for (Grade grade : studentGrades){
-            if (grade.getSubject().equals(subject)){
-                subjectGrades.add(grade);
-            }
-        }
-        return subjectGrades;
+//        List<Grade> studentGrades = this.getGrades();
+//        List<Grade>subjectGrades = new ArrayList<>();
+//        for (Grade grade : studentGrades){
+//            if (grade.getSubject().equals(subject)){
+//                subjectGrades.add(grade);
+//            }
+//        }
+//        return subjectGrades;
+//
+        return this.getGrades()
+                .stream()
+                .map(grade -> grade.getSubject()
+                        .equals(subject)? grade:null)
+                .toList();
     }
 
 

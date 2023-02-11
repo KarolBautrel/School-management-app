@@ -38,16 +38,11 @@ public class StudentGroup {
 
     }
 
-    public List<StudentDTO> getStudentList() {
+    public List<Student> getStudentList() {
 
 
-    return this.studentList
-            .stream()
-            .map(student ->
-                    new StudentDTO(student.getName()
-                            ,student.getAge()
-                            , student.getEmail()
-                            )).toList();
+        return this.studentList;
+
     }
 
 
