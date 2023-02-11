@@ -17,7 +17,7 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name= "\"User\"") // Postgres and JPA dont allow to table named user
+@Table(name = "\"User\"") // Postgres and JPA dont allow to table named user
 public class User implements UserDetails {
 
     @Id
@@ -28,16 +28,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id")
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "user_id")
+    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Student role;
 
 
-    public  User(){
+    public User() {
 
     }
 
-    public User(String username, String email, String password,  Student role) {
+    public User(String username, String email, String password, Student role) {
         this.username = username;
         this.email = email;
         this.password = password;

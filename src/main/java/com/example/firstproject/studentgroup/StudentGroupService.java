@@ -24,47 +24,48 @@ public class StudentGroupService {
     @Autowired
     public StudentGroupService(StudentGroupRepository studentGroupRepository,
                                StudentRepository studentRepository,
-                               StudentGroupDTOMapper studentGroupDTOMapper){
-        this.studentGroupRepository= studentGroupRepository;
+                               StudentGroupDTOMapper studentGroupDTOMapper) {
+        this.studentGroupRepository = studentGroupRepository;
         this.studentRepository = studentRepository;
         this.studentGroupDTOMapper = studentGroupDTOMapper;
     }
 
-    public List<StudentGroupDTO> getStudentGroups(){
-      List<StudentGroup> rawStudentGroups =  this.studentGroupRepository.findAll();
-      return rawStudentGroups.stream()
-              .map(studentGroupDTOMapper)
-              .toList();
+    public List<StudentGroupDTO> getStudentGroups() {
+        List<StudentGroup> rawStudentGroups = this.studentGroupRepository.findAll();
+        return rawStudentGroups.stream()
+                .map(studentGroupDTOMapper)
+                .toList();
     }
 
-    public Optional<StudentGroup>getStudentGroup(Long groupId)throws ResponseStatusException{
+    public Optional<StudentGroup> getStudentGroup(Long groupId) throws ResponseStatusException {
         Optional<StudentGroup> possibleStudentGroup = this.studentGroupRepository.findById(groupId);
-        if(possibleStudentGroup.isEmpty()){
+        if (possibleStudentGroup.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no group with those id");
         }
         return possibleStudentGroup;
     }
+
     @Transactional
-    public void addStudentToGroup(Long studentId, Long groupId){
-       StudentGroup studentGroup = studentGroupRepository.findById(studentId)
-               .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                       "No student group with this id") );
+    public void addStudentToGroup(Long studentId, Long groupId) {
+        StudentGroup studentGroup = studentGroupRepository.findById(studentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No student group with this id"));
         Student possibleStudent = studentRepository.findById(groupId)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "No student with this id") );
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No student with this id"));
         studentGroup.addToStudentList(possibleStudent);
 
 
     }
 
     @Transactional
-    public void removeStudentFromGroup(Long studentId, Long groupId){
+    public void removeStudentFromGroup(Long studentId, Long groupId) {
         StudentGroup studentGroup = studentGroupRepository.findById(studentId)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "No student group with this id") );
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No student group with this id"));
         Student possibleStudent = studentRepository.findById(groupId)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "No student with this id") );
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No student with this id"));
 
         studentGroup.removeStudentFromList(possibleStudent);
     }

@@ -13,26 +13,27 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class GradeService{
+public class GradeService {
 
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
+
     @Autowired
-    public GradeService(GradeRepository gradeRepository, StudentRepository studentRepository){
+    public GradeService(GradeRepository gradeRepository, StudentRepository studentRepository) {
         this.gradeRepository = gradeRepository;
         this.studentRepository = studentRepository;
     }
 
-    public List<Grade> getStudentSubjectGrades(Long studentId, String subject){
-       Student studentOptional = this.studentRepository.findById(studentId).
-               orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
-       return studentOptional.getGradesBySubject(subject);
+    public List<Grade> getStudentSubjectGrades(Long studentId, String subject) {
+        Student studentOptional = this.studentRepository.findById(studentId).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+        return studentOptional.getGradesBySubject(subject);
 
     }
 
-    public List<Grade> getStudentGrades(Long studentId){
-       Student studentOptional = this.studentRepository.findById(studentId).
-               orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Student not found"));
+    public List<Grade> getStudentGrades(Long studentId) {
+        Student studentOptional = this.studentRepository.findById(studentId).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
         return studentOptional.getGrades();
     }
 
@@ -41,22 +42,22 @@ public class GradeService{
         Student studentOptional = this.studentRepository.findById(studentId).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
 
-       Grade newGrade = new Grade(gradeJson.get("subject").toString(),
-               (Integer)gradeJson.get("grade"),
-               studentOptional);
+        Grade newGrade = new Grade(gradeJson.get("subject").toString(),
+                (Integer) gradeJson.get("grade"),
+                studentOptional);
         gradeRepository.save(newGrade);
 
     }
 
     @Transactional
-    public void updateGrade(Long gradeId, Integer grade){
+    public void updateGrade(Long gradeId, Integer grade) {
         Grade gradeOptional = this.gradeRepository.findById(gradeId).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade was not found"));
         gradeOptional.setGrade(grade);
 
     }
 
-    public void deleteGrade(Long gradeId){
+    public void deleteGrade(Long gradeId) {
         Grade gradeOptional = this.gradeRepository.findById(gradeId).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade was not found"));
         gradeRepository.deleteById(gradeId);

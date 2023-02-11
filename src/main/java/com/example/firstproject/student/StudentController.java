@@ -10,34 +10,35 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api/public/student")
+@RequestMapping(path = "api/public/student")
 public class StudentController {
 
     private final StudentService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService){
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
 
     }
+
     @GetMapping("/")
-    public ResponseEntity getStudents(){
+    public ResponseEntity getStudents() {
         return ResponseEntity.ok(this.studentService.getStudents());
     }
+
     @GetMapping("/{studentId}")
-    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId){
+    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId) {
         System.out.println("DUPA");
         return ResponseEntity.ok(studentService.getStudent(studentId));
     }
 
     @PostMapping("/")
-    public void registerNewStudent(@RequestBody Student student)
-    {
+    public void registerNewStudent(@RequestBody Student student) {
         studentService.addNewStudent(student);
     }
 
     @DeleteMapping("/{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long studentId){
+    public void deleteStudent(@PathVariable("studentId") Long studentId) {
         studentService.deleteStudent(studentId);
     }
 
@@ -46,7 +47,7 @@ public class StudentController {
             @PathVariable("studentId") Long studentId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email
-    ){
+    ) {
         studentService.updateStudent(studentId, name, email);
     }
 }

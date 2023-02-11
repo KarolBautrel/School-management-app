@@ -9,29 +9,30 @@ import java.util.List;
 @Service
 public class TeacherService {
 
-TeacherRepository teacherRepository;
-TeacherDTOMapper teacherDTOMapper;
-@Autowired
-public TeacherService(TeacherRepository teacherRepository,
-                      TeacherDTOMapper teacherDTOMapper){
-    this.teacherRepository = teacherRepository;
-    this.teacherDTOMapper = teacherDTOMapper;
-}
+    TeacherRepository teacherRepository;
+    TeacherDTOMapper teacherDTOMapper;
 
-public List<TeacherDTO> getTeachers(){
-    return this.teacherRepository
-            .findAll()
-            .stream()
-            .map(teacherDTOMapper)
-            .toList();
-}
+    @Autowired
+    public TeacherService(TeacherRepository teacherRepository,
+                          TeacherDTOMapper teacherDTOMapper) {
+        this.teacherRepository = teacherRepository;
+        this.teacherDTOMapper = teacherDTOMapper;
+    }
 
-public List<TeacherDTO> getTeachersBySubject(String subject){
-    return this.teacherRepository
-            .findTeacherBySubject(subject)
-            .stream()
-            .map(teacherDTOMapper)
-            .toList();
-}
+    public List<TeacherDTO> getTeachers() {
+        return this.teacherRepository
+                .findAll()
+                .stream()
+                .map(teacherDTOMapper)
+                .toList();
+    }
+
+    public List<TeacherDTO> getTeachersBySubject(String subject) {
+        return this.teacherRepository
+                .findTeacherBySubject(subject)
+                .stream()
+                .map(teacherDTOMapper)
+                .toList();
+    }
 
 }

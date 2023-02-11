@@ -5,6 +5,7 @@ import com.example.firstproject.teacher.TeacherDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
+
 @Entity
 @Table
 public class Subject {
@@ -13,18 +14,19 @@ public class Subject {
     Long id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL,
-    mappedBy = "subject")
+            mappedBy = "subject")
     private List<Teacher> teachers;
 
 
-    public Subject(){
+    public Subject() {
 
     }
 
-    public Subject(String name, List<Teacher> teachers){
+    public Subject(String name, List<Teacher> teachers) {
         this.name = name;
         this.teachers = teachers;
     }
+
     public Long getId() {
         return id;
     }
@@ -42,7 +44,7 @@ public class Subject {
     }
 
     public List<Teacher> getTeachers() {
-        return  this.teachers;
+        return this.teachers;
 
     }
 

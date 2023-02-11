@@ -13,22 +13,24 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/")
-    public List<UserDTO> listAllUsers(){
-       return this.userService.listAllUsers();
-    };
+    public List<UserDTO> listAllUsers() {
+        return this.userService.listAllUsers();
+    }
+
+    ;
 
     @GetMapping("/{userId}")
-    public UserDTO getUserById(@PathVariable("userId") Long userId){
+    public UserDTO getUserById(@PathVariable("userId") Long userId) {
         return this.userService.getUserById(userId);
     }
 
     @GetMapping("/loggedUser")
-    public ResponseEntity<UserDTO> getLoggedUser(@RequestHeader("Authorization") String token){
+    public ResponseEntity<UserDTO> getLoggedUser(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.getLoggedUser(token));
     }
 

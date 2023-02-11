@@ -13,20 +13,21 @@ import java.util.List;
 public class TeacherController {
 
     TeacherService teacherService;
+
     @Autowired
-    public TeacherController(TeacherService teacherService){
+    public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
 
 
     @GetMapping("/")
-    public List<TeacherDTO> getTeachers(){
+    public List<TeacherDTO> getTeachers() {
         return this.teacherService.getTeachers();
     }
 
     @GetMapping("/{subject}")
     public List<TeacherDTO> getTeachersBySubject(@PathVariable("subject")
-                                                    String subject){
+                                                 String subject) {
         return this.teacherService.getTeachersBySubject(subject);
     }
 

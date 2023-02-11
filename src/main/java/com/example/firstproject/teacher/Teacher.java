@@ -19,7 +19,7 @@ public class Teacher {
     public Subject subject;
 
 
-    public Teacher(){
+    public Teacher() {
 
     }
 

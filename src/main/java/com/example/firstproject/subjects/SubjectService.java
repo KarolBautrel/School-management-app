@@ -13,15 +13,16 @@ public class SubjectService {
 
     SubjectRepository subjectRepository;
     SubjectDTOMapper subjectDTOMapper;
+
     @Autowired
     SubjectService(SubjectRepository subjectRepository,
                    SubjectDTOMapper subjectDTOMapper
-    ){
+    ) {
         this.subjectRepository = subjectRepository;
         this.subjectDTOMapper = subjectDTOMapper;
     }
 
-    public List<SubjectDTO> getSubjects(){
+    public List<SubjectDTO> getSubjects() {
         return this.subjectRepository
                 .findAll()
                 .stream()
@@ -30,11 +31,11 @@ public class SubjectService {
     }
 
 
-    public SubjectDTO getSubject(String subject){
+    public SubjectDTO getSubject(String subject) {
         System.out.println(subject);
-   return this.subjectRepository
-           .findSubjectByName(subject)
-           .map(subjectDTOMapper)
-           .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "No subject"));
-}
+        return this.subjectRepository
+                .findSubjectByName(subject)
+                .map(subjectDTOMapper)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No subject"));
+    }
 }

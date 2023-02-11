@@ -17,4 +17,5 @@ public class SubjectDTOMapper implements Function<Subject, SubjectDTO> {
                 .map(teacher -> new TeacherDTO(
                         teacher.getName(),
                         teacher.getSubject().getName())).toList());
-}}
+    }
+}

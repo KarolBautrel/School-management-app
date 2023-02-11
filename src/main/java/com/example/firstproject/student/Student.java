@@ -1,10 +1,12 @@
 package com.example.firstproject.student;
+
 import com.example.firstproject.grade.Grade;
 import com.example.firstproject.studentgroup.StudentGroup;
 import com.example.firstproject.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.time.Period;
@@ -26,8 +28,8 @@ public class Student {
     private Integer age;
     private LocalDate dateOfBirth;
     private String email;
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="studentgroup_id", nullable = true)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "studentgroup_id", nullable = true)
     @JsonManagedReference
     private StudentGroup studentGroup;
     @OneToMany(
@@ -37,13 +39,12 @@ public class Student {
     @JsonManagedReference
     private List<Grade> grades = new ArrayList<>();
 
-    public Student(){
+    public Student() {
 
     }
 
 
-
-    public List<Grade> getGradesBySubject(String subject){
+    public List<Grade> getGradesBySubject(String subject) {
 //        List<Grade> studentGrades = this.getGrades();
 //        List<Grade>subjectGrades = new ArrayList<>();
 //        for (Grade grade : studentGrades){
@@ -56,7 +57,7 @@ public class Student {
         return this.getGrades()
                 .stream()
                 .map(grade -> grade.getSubject()
-                        .equals(subject)? grade:null)
+                        .equals(subject) ? grade : null)
                 .toList();
     }
 
@@ -85,6 +86,7 @@ public class Student {
     public void setGrades(List<Grade> grades) {
         this.grades = grades;
     }
+
     public Long getId() {
         return id;
     }

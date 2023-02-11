@@ -1,4 +1,5 @@
 package com.example.firstproject.studentgroup;
+
 import com.example.firstproject.student.Student;
 import com.example.firstproject.student.StudentDTO;
 import com.example.firstproject.student.StudentDTOMapper;
@@ -23,14 +24,15 @@ public class StudentGroup {
     private int size;
 
     @OneToMany(
-     cascade = CascadeType.ALL, mappedBy = "studentGroup")
+            cascade = CascadeType.ALL, mappedBy = "studentGroup")
     @JsonManagedReference
     private List<Student> studentList = new ArrayList<>();
 
 
-    public StudentGroup(){
+    public StudentGroup() {
 
     }
+
     public StudentGroup(String name, int size, List<Student> studentList) {
         this.name = name;
         this.size = size;
@@ -50,21 +52,22 @@ public class StudentGroup {
         this.studentList = studentList;
     }
 
-    public void addToStudentList(Student student){
+    public void addToStudentList(Student student) {
         this.studentList.add(student);
         student.setStudentGroup(this);
 
     }
 
-    public void removeStudentFromList(Student student) throws ResponseStatusException{
+    public void removeStudentFromList(Student student) throws ResponseStatusException {
 
 
-        if(!this.studentList.contains(student)){
+        if (!this.studentList.contains(student)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no student in this group");
         }
         this.studentList.remove(student);
         student.setStudentGroup(null);
     }
+
     public Long getId() {
         return id;
     }

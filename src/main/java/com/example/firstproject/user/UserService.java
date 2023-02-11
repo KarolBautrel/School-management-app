@@ -20,48 +20,48 @@ import java.util.stream.Collectors;
 public class UserService {
 
 
-private final UserRepository userRepository;
-private final StudentRepository studentRepository;
-private final UserDTOMapper userDTOMapper;
-private final PasswordEncoder passwordEncoder;
-private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final UserDTOMapper userDTOMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
 
     @Autowired
     public UserService(UserRepository userRepository,
                        StudentRepository studentRepository,
-                        PasswordEncoder passwordEncoder,
+                       PasswordEncoder passwordEncoder,
                        UserDTOMapper userDTOMapper,
                        JwtService jwtService
-                        ){
-    this.userRepository = userRepository;
-    this.studentRepository = studentRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.userDTOMapper = userDTOMapper;
-    this.jwtService = jwtService;
-}
+    ) {
+        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userDTOMapper = userDTOMapper;
+        this.jwtService = jwtService;
+    }
 
 
-public List<UserDTO> listAllUsers(){
+    public List<UserDTO> listAllUsers() {
         return userRepository.findAll().
                 stream().
                 map(userDTOMapper).
                 collect(Collectors.toList());
     }
 
-public UserDTO getUserById(Long userId){
-       return this.userRepository.findById(userId)
-               .map(userDTOMapper).
-               orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student like this"));
+    public UserDTO getUserById(Long userId) {
+        return this.userRepository.findById(userId)
+                .map(userDTOMapper).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student like this"));
 
     }
 
-public UserDTO getLoggedUser(String token){
+    public UserDTO getLoggedUser(String token) {
         String username = jwtService.extractUsername(token.substring(7));// We are taking care of "Bearer "
         User user = this.userRepository.findUserByUsernameQuery(username)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return new UserDTO(user.getUsername(), user.getEmail(), user.getRole());
-}
+    }
 }
 
 

@@ -12,23 +12,22 @@ public class Grade {
     private String subject;
     private Integer grade;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="student_fk")
+    @JoinColumn(name = "student_fk")
     @JsonBackReference
     private Student student;
 
 
-    public Grade(){
+    public Grade() {
 
     }
 
 
-    public Grade( String subject, Integer grade,  Student student) {
+    public Grade(String subject, Integer grade, Student student) {
         this.subject = subject;
         this.grade = grade;
         this.student = student;
 
     }
-
 
 
     public Long getId() {
@@ -66,11 +65,6 @@ public class Grade {
 
     @Override
     public String toString() {
-        return "Grade{" +
-                "id=" + id +
-                ", subject='" + subject + '\'' +
-                ", grade=" + grade +
-                ", student=" + student +
-                '}';
+        return "Grade{" + "id=" + id + ", subject='" + subject + '\'' + ", grade=" + grade + ", student=" + student + '}';
     }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 public record StudentGroupDTO(
         String name,
         int size,
-        List<StudentDTO>  studentList
+        List<StudentDTO> studentList
 ) {
 }
