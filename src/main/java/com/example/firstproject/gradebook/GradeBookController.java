@@ -1,11 +1,9 @@
 package com.example.firstproject.gradebook;
 
 import com.example.firstproject.grade.Grade;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +18,13 @@ public class GradeBookController {
     }
 
     @GetMapping("/{gradeBookId}")
-    public  List<List<Grade>> getAllGradeBookGrades(@PathVariable("gradeBookId") Long gradeBookid){
-        return this.gradeBookService.getAllGradeBookGrades(gradeBookid);
+    public  List<Grade> getAllGradeBookGrades(@PathVariable("gradeBookId") Long gradeBookId){
+        return this.gradeBookService.getAllGradeBookGrades(gradeBookId);
     }
 
-
+    @GetMapping("/{subject}/{gradeBookId}")
+    public List<Grade> getGradeBookGradesBySubject(
+            @PathVariable("gradeBookId")Long gradeBookId, @PathVariable("subject") String subject){
+        return this.gradeBookService.getGradeBookGradesBySubject(gradeBookId, subject);
+    }
 }
