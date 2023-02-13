@@ -22,14 +22,14 @@ public class StudentController {
     }
 
     @GetMapping("/")
-    public ResponseEntity getStudents() {
-        return ResponseEntity.ok(this.studentService.getStudents());
+    public List<StudentDTO> getStudents() {
+        return this.studentService.getStudents();
     }
 
     @GetMapping("/{studentId}")
-    public ResponseEntity getStudent(@PathVariable("studentId") Long studentId) {
+    public StudentDTO getStudent(@PathVariable("studentId") Long studentId) {
         System.out.println("DUPA");
-        return ResponseEntity.ok(studentService.getStudent(studentId));
+        return studentService.getStudent(studentId);
     }
 
     @PostMapping("/")

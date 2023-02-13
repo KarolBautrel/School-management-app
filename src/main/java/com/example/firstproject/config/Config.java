@@ -1,6 +1,8 @@
 package com.example.firstproject.config;
 
 import com.example.firstproject.grade.*;
+import com.example.firstproject.gradebook.GradeBook;
+import com.example.firstproject.gradebook.GradeBookRepository;
 import com.example.firstproject.student.*;
 import com.example.firstproject.studentgroup.*;
 import com.example.firstproject.subjects.Subject;
@@ -58,12 +60,14 @@ public class Config {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository repository
+    CommandLineRunner commandLineRunner(
+            StudentRepository repository
             , StudentGroupRepository groupRepository
             , GradeRepository gradeRepository
             , UserRepository userRepository
             , SubjectRepository subjectRepository
-            ,TeacherRepository teacherRepository){
+            , TeacherRepository teacherRepository,
+            GradeBookRepository gradeBookRepository){
 
         return args -> {
             Subject physics = new Subject("physics", new ArrayList<>());
@@ -89,6 +93,20 @@ public class Config {
                     new ArrayList<>(),
                     groupB
             );
+            Student franek =   new Student(
+                    "Franek",
+                    LocalDate.of(2021, Month.MARCH, 1),
+                    "franek@franek.franek",
+                    new ArrayList<>(),
+                    groupB
+            );
+            Student hela =   new Student(
+                    "Hela",
+                    LocalDate.of(2022, Month.SEPTEMBER, 1),
+                    "hela@hela.hela",
+                    new ArrayList<>(),
+                    groupB
+            );
 
 
             Grade gradeKarol = new Grade("history", 3, karol);
@@ -97,10 +115,20 @@ public class Config {
             Grade gradeMarian = new Grade("biology", 3, marian);
             Grade gradeMarian1 = new Grade("biology", 3, marian);
             Grade gradeMarian2= new Grade("history", 3, marian);
+            Grade gradeFranek1= new Grade("history", 3, franek);
+            Grade gradeFranek2= new Grade("biology", 3, franek);
+            Grade gradeFranek3= new Grade("physics", 3, franek);
+            Grade gradeHela1= new Grade("history", 3, hela);
+            Grade gradeHela2= new Grade("biology", 3, hela);
+            Grade gradeHela3= new Grade("physics", 3, hela);
+
+            GradeBook gradeBook1 = new GradeBook(groupA);
+            GradeBook gradeBook2 = new GradeBook(groupB);
+
             subjectRepository.saveAll(List.of(physics, history, biology));
             teacherRepository.saveAll(List.of(phyTeacher, bioTeacher, histTeacher));
             repository.saveAll(
-                    List.of(karol, marian)
+                    List.of(karol, marian, franek, hela)
             );
             groupRepository.saveAll(
                     List.of(groupA, groupB)
@@ -111,9 +139,15 @@ public class Config {
                     gradeKarol2,
                     gradeMarian1,
                     gradeMarian2,
-                    gradeMarian));
+                    gradeMarian,
+                    gradeFranek1,
+                    gradeFranek2,
+                    gradeFranek3,
+                    gradeHela1,
+                    gradeHela2,
+                    gradeHela3));
 
-
+            gradeBookRepository.saveAll(List.of(gradeBook1, gradeBook2));
         };
     }
 

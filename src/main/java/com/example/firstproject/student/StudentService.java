@@ -19,41 +19,39 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentDTOMapper studentDTOMapper;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository,StudentDTOMapper studentDTOMapper) {
 
         this.studentRepository = studentRepository;
+        this.studentDTOMapper = studentDTOMapper;
     }
 
-    public List<Student> getStudents() {
-        return this.studentRepository.findAll();
+    public List<StudentDTO> getStudents() {
+
+        List<Student> studentList =  this.studentRepository.findAll();
+        return studentList.stream().map(studentDTOMapper).toList();
+
     }
 
-    public Optional<Student> getStudent(Long studentId) throws ResponseStatusException {
-        Optional<Student> studentOptional = this.studentRepository.findById(studentId);
-        if (studentOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No student with those id");
-        }
-        return studentOptional;
+    public StudentDTO getStudent(Long studentId) throws ResponseStatusException {
+       Student student = this.studentRepository.findById(studentId)
+               .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+
+        return new StudentDTO(student.getName(), student.getAge(), student.getEmail());
     }
 
     public void addNewStudent(Student student) throws ResponseStatusException {
-        Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
-        if (studentOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email is already taken");
-        }
+     Student studentOptional = studentRepository.findStudentByEmail(student.getEmail())
+             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student with this email"));
         studentRepository.save(student);
-        System.out.println(student);
     }
 
     public void deleteStudent(Long studentId) throws ResponseStatusException {
-        Optional<Student> student = studentRepository.findById(studentId);
-        if (student.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No student with this id");
-        }
+        Student student = studentRepository.findById(studentId)
+                        .orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND, "No student with this id"));
         studentRepository.deleteById(studentId);
-        System.out.println("DELETED");
     }
 
     @Transactional

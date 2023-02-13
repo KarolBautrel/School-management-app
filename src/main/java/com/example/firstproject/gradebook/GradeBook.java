@@ -31,11 +31,5 @@ public class GradeBook {
         this.studentGroup = studentGroup;
     }
 
-    public List<List<Grade>> getStudentGroupGrades(StudentGroup studentGroup){
-       List<Student> studentList =  studentGroup.getStudentList();
-       return  studentList.stream().map(student -> student.getGrades()).toList();
-    }
-    public List<Student> getStudentsGroup(StudentGroup studentGroup){
-        return studentGroup.getStudentList();
-    }
+
 }
