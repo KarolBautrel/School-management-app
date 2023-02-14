@@ -6,7 +6,7 @@ public record TokenUserDTO(
         String token,
         String username,
         String email,
-        Student student
+        Object role
 
 ) {
 }

@@ -6,13 +6,15 @@ public class RegisterAccountDTO {
     public String email;
     public String password;
     public String confirmPassword;
-    public Integer studentId;
-    public RegisterAccountDTO(String username, String email, String password, String confirmPassword, Integer studentId){
+    public String role;
+    public Integer roleId;
+    public RegisterAccountDTO(String username, String email, String password,String role, String confirmPassword, Integer roleId){
         this.username = username;
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
-        this.studentId = studentId;
+        this.role = role;
+        this.roleId = roleId;
     }
 }
 

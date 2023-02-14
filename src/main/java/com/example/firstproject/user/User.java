@@ -1,18 +1,15 @@
 package com.example.firstproject.user;
 
+import com.example.firstproject.roles.SchoolRoles;
 import com.example.firstproject.student.Student;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.firstproject.teacher.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
-import java.util.Optional;
+
 
 @Builder
 @AllArgsConstructor
@@ -30,18 +27,31 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Student role;
+    private Student  studentRole;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacherRole;
 
+    private SchoolRoles role;
 
     public User() {
 
     }
 
-    public User(String username, String email, String password, Student role) {
+    public User(String username, String email, String password, Student studentRole) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.studentRole = studentRole;
+        this.role = SchoolRoles.STUDENT;
+    }
+
+    public User(String username, String email, String password, Teacher teacherRole) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.teacherRole = teacherRole;
+        this.role = SchoolRoles.TEACHER;
     }
 
     public String getUsername() {
@@ -94,11 +104,11 @@ public class User implements UserDetails {
     }
 
 
-    public Student getRole() {
-        return role;
+    public SchoolRoles getRole() {
+        return this.role;
     }
 
-    public void setRole(Student role) {
+    public void setRole(SchoolRoles role) {
         this.role = role;
     }
 
@@ -119,5 +129,21 @@ public class User implements UserDetails {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    public Student getStudentRole() {
+        return studentRole;
+    }
+
+    public void setStudentRole(Student studentRole) {
+        this.studentRole = studentRole;
+    }
+
+    public Teacher getTeacherRole() {
+        return teacherRole;
+    }
+
+    public void setTeacherRole(Teacher teacherRole) {
+        this.teacherRole = teacherRole;
     }
 }

@@ -2,7 +2,6 @@ package com.example.firstproject.gradebook;
 
 import com.example.firstproject.grade.Grade;
 import com.example.firstproject.student.Student;
-import com.example.firstproject.studentgroup.StudentGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,9 +31,9 @@ public List<Grade> getAllGradeBookGrades(Long gradeBookId){
             .toList();
     List<Grade> gradeList = new ArrayList<>();
     for (List<Grade> grades: nestedGrades){
-        for (int i = 0; i< grades.size(); i++){
+        for (Grade grade : grades) {
             {
-                gradeList.add(grades.get(i));
+                gradeList.add(grade);
             }
         }
     }
@@ -55,9 +54,9 @@ public List<Grade> getGradeBookGradesBySubject(Long gradeBookId, String subject)
     List<Grade> gradeList = new ArrayList<>();
 
      for (List<Grade> grades: nestedGrades){
-         for (int i = 0; i< grades.size(); i++){
-             if (grades.get(i) != null &&  grades.get(i).getSubject().equals(subject)){
-                 gradeList.add(grades.get(i));
+         for (Grade grade : grades) {
+             if (grade != null && grade.getSubject().equals(subject)) {
+                 gradeList.add(grade);
              }
          }
      }

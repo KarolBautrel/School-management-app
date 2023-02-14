@@ -1,4 +1,4 @@
-package com.example.firstproject.subjects;
+package com.example.firstproject.subject;
 
 import com.example.firstproject.teacher.TeacherDTO;
 import org.springframework.stereotype.Service;

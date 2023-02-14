@@ -1,6 +1,6 @@
 package com.example.firstproject.teacher;
 
-import com.example.firstproject.subjects.Subject;
+import com.example.firstproject.subject.Subject;
 import jakarta.persistence.*;
 
 @Entity

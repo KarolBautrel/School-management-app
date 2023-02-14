@@ -1,4 +1,4 @@
-package com.example.firstproject.subjects;
+package com.example.firstproject.subject;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

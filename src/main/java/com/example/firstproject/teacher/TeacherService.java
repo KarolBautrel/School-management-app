@@ -1,6 +1,5 @@
 package com.example.firstproject.teacher;
 
-import com.example.firstproject.subjects.SubjectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

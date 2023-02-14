@@ -1,7 +1,6 @@
-package com.example.firstproject.subjects;
+package com.example.firstproject.subject;
 
 import com.example.firstproject.teacher.Teacher;
-import com.example.firstproject.teacher.TeacherDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
