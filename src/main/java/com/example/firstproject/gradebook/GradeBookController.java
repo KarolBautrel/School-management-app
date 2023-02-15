@@ -19,7 +19,7 @@ public class GradeBookController {
 
     @GetMapping("/{gradeBookId}")
     public  List<Grade> getAllGradeBookGrades(@PathVariable("gradeBookId") Long gradeBookId){
-        return this.gradeBookService.getAllGradeBookGrades(gradeBookId);
+        return this.gradeBookService.getAllGradeBookGradesById(gradeBookId);
     }
 
     @GetMapping("/{subject}/{gradeBookId}")

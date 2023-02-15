@@ -12,55 +12,20 @@ import java.util.List;
 
 @Service
 public class GradeBookService {
-
-    GradeBookRepository gradeBookRepository;
+    GradeBookUtils gradeBookUtils;
     @Autowired
-    public GradeBookService(GradeBookRepository gradeBookRepository){
-    this.gradeBookRepository = gradeBookRepository;
+    public GradeBookService(GradeBookRepository gradeBookRepository,
+                            GradeBookUtils gradeBookUtils){
+    this.gradeBookUtils = gradeBookUtils;
 }
 
-public List<Grade> getAllGradeBookGrades(Long gradeBookId){
-    GradeBook gradeBook = this.gradeBookRepository.findById(gradeBookId)
-            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student group with this id"));
+public List<Grade> getAllGradeBookGradesById(Long gradeBookId){
 
-    List<List<Grade>> nestedGrades = gradeBook
-            .getStudentGroup()
-            .getStudentList()
-            .stream()
-            .map(Student::getGrades )
-            .toList();
-    List<Grade> gradeList = new ArrayList<>();
-    for (List<Grade> grades: nestedGrades){
-        for (Grade grade : grades) {
-            {
-                gradeList.add(grade);
-            }
-        }
-    }
-
-    return gradeList;
+    return this.gradeBookUtils.getAllGradeBookGradesById(gradeBookId);
     }
 
 public List<Grade> getGradeBookGradesBySubject(Long gradeBookId, String subject){
-    GradeBook gradeBook = this.gradeBookRepository.findById(gradeBookId)
-            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "No student group with this id"));
-    List<List<Grade>> nestedGrades = gradeBook
-            .getStudentGroup()
-            .getStudentList()
-            .stream()
-            .map(student -> student.getGradesBySubject(subject) )
-            .toList();
 
-    List<Grade> gradeList = new ArrayList<>();
-
-     for (List<Grade> grades: nestedGrades){
-         for (Grade grade : grades) {
-             if (grade != null && grade.getSubject().equals(subject)) {
-                 gradeList.add(grade);
-             }
-         }
-     }
-
-    return gradeList;
+    return  this.gradeBookUtils.getGradeBookGradesBySubject(gradeBookId, subject);
 }
 }
